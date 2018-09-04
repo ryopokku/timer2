@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css?family=Share+Tech+Mono');
+
+
+.container{
+    text-align: center;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+#timer{
+    font-size: 40px;
+    border: 1px solid #ccc;
+    padding: 50px;
+    background-color:#000;
+    color:#fff;
+    border-radius:20px;
+    box-shadow:1px 1px 3px rgba(0,0,0,.4);
+    width: 100%;
+    font-family: 'Share Tech Mono', monospace;
+
+}
+
+.btn{
+    margin-bottom: 10px;
+}
+
+ol {
+    text-align: center;
+    font-size: 30px;
+    font-family: 'Share Tech Mono', monospace;
+    width: 60%;
+/*     list-style : decimal inside;
+ */    padding: 0;
+    margin: 10px auto;
+}
+
+li{
+    border-bottom: 2px dotted #ccc;
+}

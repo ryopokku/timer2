@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/style.css">
+    <title>TIMER2</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <p id="timer">00:00:00.000</p>
+            <button id="start_stop" class="btn btn-lg btn-primary col-12">START</button>
+            <button id="lap" class="btn btn-lg btn-success col-5" disabled>LAP</button>
+            <button id="reset" class="btn btn-lg btn-danger offset-2 col-5" disabled>RESET</button>
+        </div>            
+        <div>
+            <ol id="lap_list">
+            </ol>
+        </div> 
+    </div>
+
+    <script>
+        var now;
+        var start;
+        var milli;
+        var pause;
+        var timer_id;
+
+        document.getElementById('start_stop').addEventListener('click',function() {
+            if (this.innerHTML === 'START'){
+                start = new Date();
+                
+                 //初期状態（00:00:00.000）でなかったら、ポーズから再開用のreTimer関数を使用
+            if (document.getElementById('timer').innerHTML === '00:00:00.000'){
+                timer_id = setInterval(goTimer,10);
+            }else{
+                timer_id = setInterval(reTimer,10);
+            }
+
+                //ポーズボタンにする
+                this.innerHTML = 'PAUSE';
+                this.classList.remove('btn-primary');
+                this.classList.add('btn-warning');
+
+                //ラップ・リセットボタンを有効化する
+                document.getElementById('lap').disabled = "";
+                document.getElementById('reset').disabled = "";
+
+            } else {
+                //ポーズした時間を保存
+                pause = new Date(milli);
+
+                stopTimer();               
+            }
+        });
+
+        document.getElementById('reset').addEventListener('click',function(){
+            //リセットボタンを無効に戻す
+            this.disabled = "true"
+            document.getElementById('lap').disabled = "true";
+
+            stopTimer();
+
+            //初期表示に戻す
+            document.getElementById('timer').innerHTML = '00:00:00.000';
+            document.getElementById('lap_list').textContent = null;
+        });
+
+        document.getElementById('lap').addEventListener('click',function(){
+            //LAPを出力
+            var element = document.createElement("li");
+            var text = document.createTextNode(document.getElementById('timer').innerHTML);
+            document.getElementById('lap_list').appendChild(element).appendChild(text);
+        });
+
+        var addZero = function(value) {
+            if (value < 10){
+                value = '0' + value;
+            }
+            return value;
+        } 
+
+        var goTimer = function() {
+            now = new Date();
+
+            milli = now.getTime() - start.getTime();
+            
+            timeToText();
+        }
+
+        var reTimer = function() {
+            now = new Date();
+            
+            milli = now.getTime() - start.getTime() + pause.getTime();
+            
+            timeToText();
+        }
+
+        var stopTimer = function(){
+            clearInterval(timer_id);
+
+            //スタートボタンに戻す
+            document.getElementById('start_stop').innerHTML = 'START';
+            document.getElementById('start_stop').classList.remove('btn-warning');
+            document.getElementById('start_stop').classList.add('btn-primary');
+
+            //ラップボタンを無効に戻す
+            document.getElementById('lap').disabled = "true";
+        }
+
+        var timeToText = function(){
+            var seconds = Math.floor(milli / 1000);
+            var minutes = Math.floor(seconds / 60);
+            var hours = Math.floor(minutes / 60);
+
+            seconds = seconds - minutes * 60;
+            minutes = minutes - hours * 60;
+
+            hours = addZero(hours);
+            minutes = addZero(minutes);
+            seconds = addZero(seconds);
+
+            //小数点以下の秒数 
+            var seconds2 = Math.floor( ( milli / 1000 - seconds ) * 1000 );
+
+            //3桁用のaddZero
+            //10より小さければゼロは2つつく
+            if (seconds2 < 100){
+                seconds2 = '0' + seconds2;
+            }
+            if (seconds2 < 10){
+                seconds2 = '0' + seconds2;
+            }
+
+            document.getElementById('timer').innerHTML = hours + ':' + minutes + ':' + seconds + '.' + seconds2;
+        }
+
+    </script>
+</body>
+</html>
