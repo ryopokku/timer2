@@ -76,7 +76,6 @@
         });
 
         var addZero = function(value) {
-
             if (value < 10){
                 value = '0' + value;
             }
@@ -85,14 +84,11 @@
         } 
 
         var addZero2 = function(value) {
-            
             if (value < 100){
                 value = '0' + value;
             }
             
-            if (value < 10){
-                value = '0' + value;
-            }
+            value = addZero(value);
 
             return value;
         }
