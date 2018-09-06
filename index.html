@@ -26,6 +26,7 @@
         var start;
         var milli;
         var pause;
+        // Javascriptでは変数名は基本的にはキャメルケースを使う(timerId)方が良いです
         var timer_id;
 
         document.getElementById('start_stop').addEventListener('click',function() {
@@ -33,6 +34,7 @@
                 start = new Date();
                 
                  //初期状態（00:00:00.000）でなかったら、ポーズから再開用のreTimer関数を使用
+            // インデントが浅いように見えます
             if (document.getElementById('timer').innerHTML === '00:00:00.000'){
                 timer_id = setInterval(goTimer,10);
             }else{
@@ -70,7 +72,9 @@
 
         document.getElementById('lap').addEventListener('click',function(){
             //LAPを出力
+            // 細かいですが文字をクォーテーションもしくはダブルクォーテーションで括るのを他と統一した方が読みやすいです
             var element = document.createElement("li");
+            // LAPのタイムは通常STARTからの時間ではなくて前にLAP押した時からのタイムのような？？
             var text = document.createTextNode(document.getElementById('timer').innerHTML);
             document.getElementById('lap_list').appendChild(element).appendChild(text);
         });
@@ -123,6 +127,7 @@
             seconds = addZero(seconds);
 
             //小数点以下の秒数 
+            // seconds2だと何を表しているのか分かりづらい印象。decimalNumbersやdecimalSecondsとか？
             var seconds2 = Math.floor( ( milli / 1000 - seconds ) * 1000 );
 
             //3桁用のaddZero
@@ -130,6 +135,7 @@
             if (seconds2 < 100){
                 seconds2 = '0' + seconds2;
             }
+            // addZeroメソッドが使えそう
             if (seconds2 < 10){
                 seconds2 = '0' + seconds2;
             }
